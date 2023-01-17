@@ -1,0 +1,100 @@
+#include "../../include/fmm/fmm.tpp"
+
+using namespace fmm;
+
+int main()
+{
+	/* Init */
+	SMatrix<double> A({{1, 3, 2},
+					   {2, 0, 1},
+					   {1, 2, 0}});
+
+	SMatrix<double> B({{3, 0, 1},
+					   {1, 0, 1},
+					   {0, 1, 2}});
+
+	/* Test Section */
+	try
+	{
+		std::cout << "-----------Start-----------" << std::endl;
+		std::cout << A << std::endl;
+		std::cout << B << std::endl;
+
+		std::cout << "-----------Crop-----------" << std::endl;
+		A.crop(4);
+		std::cout << A << std::endl;
+
+		std::cout << "-----------Trim-----------" << std::endl;
+		A.trim(3);
+		std::cout << A << std::endl;
+
+		std::cout << "-----------Split-----------" << std::endl;
+		SMatrix<double> *C = B.split();
+		for (size_t i = 0; i < 4; ++i)
+			std::cout << C[i] << std::endl;
+
+		std::cout << "-----------Assign-----------" << std::endl;
+		for (size_t i = 0; i < 4; ++i)
+		{
+			C[i] = A;
+			std::cout << C[i] << std::endl;
+		}
+
+		std::cout << "-----------Merge-----------" << std::endl;
+		SMatrix<double> D(4);
+		D = SMatrix<double>::merge(C);
+		std::cout << D << std::endl;
+
+		std::cout << "-----------SwapRows-----------" << std::endl;
+		D.swapRows(0, 1);
+		std::cout << D << std::endl;
+
+		std::cout << "-----------Sum-----------" << std::endl;
+		SMatrix<double> E = C[0] + C[1];
+		std::cout << E << std::endl;
+
+		std::cout << "-----------Sub-----------" << std::endl;
+		E = C[0] - C[1];
+		std::cout << E << std::endl;
+
+		std::cout << "-----------MultbyScalar-----------" << std::endl;
+		E = C[0] * 3;
+		E = 3 * C[0];
+		std::cout << E << std::endl;
+
+		std::cout << "-----------Determinant-----------" << std::endl;
+		std::cout << B.determinant() << std::endl;
+
+		std::cout << "-----------Transpose-----------" << std::endl;
+		std::cout << B.transpose() << std::endl;
+
+		std::cout << "-----------Reduction-----------" << std::endl;
+		std::cout << B.reduce(1, 1) << std::endl;
+
+		std::cout << "-----------Adjoint-----------" << std::endl;
+		std::cout << B.adjoint() << std::endl;
+		
+		std::cout << "-----------Gaussian Elimination (May need some fixing)-----------" << std::endl;
+		std::cout << E.gaussEl() << std::endl;
+		
+		std::cout << "-----------Rank-----------" << std::endl;
+		std::cout << A.rank() << std::endl;
+		std::cout << B.rank() << std::endl;
+		std::cout << (A + B).rank() << std::endl;
+
+		std::cout << "-----------Naive-----------" << std::endl;
+		D = multIt(A, B);
+		std::cout << D << std::endl;
+
+		std::cout << "-----------Strassen-----------" << std::endl;
+		E = multSt(A, B);
+		E.trim(A.size());
+		std::cout << E << std::endl;
+
+		std::cout << "-----------End-----------" << std::endl;
+	}
+	catch (std::runtime_error err)
+	{
+		std::cout << "Error: " << err.what() << std::endl;
+	}
+}
