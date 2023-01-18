@@ -8,7 +8,7 @@ This library is a collection of fast multiplication algorithms and matrix operat
 It is written in C++ and is header only. It is designed to be used in other projects
 and rewritten to fit the needs of the project.
 
-The library is mostly written for educational purposes and as a proof of concept rather
+The library is mostly written for educational purposes rather
 than anything else. I highly recommend not using it in any production code.
 
 A test program is included. It can be compiled and executed using the provided makefile.
@@ -16,13 +16,12 @@ The test program is not meant to be used as a benchmark, but rather as a proof o
 
 ### Important Notes
 
-The library only supports square matrices.
+The library only supports square matrices (for now).
 
-Matrices are stored in a 1D array, which is then mapped to a 2D array using the given () operator.
+Matrices are stored in a 1D array, which is then mapped to 2D indices using the given () operator.
 (See the Matrix class for more information) Obviously, this can be changed to best fit your needs.
 
 There might (will) be bugs in the code and a lot of space for optimisation.
-If you find any, please let me know or fix them yourself and send a pull request.
 
 ## Algorithms (fmm)
 
