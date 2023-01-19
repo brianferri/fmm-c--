@@ -63,19 +63,19 @@ int main()
 		std::cout << E << std::endl;
 
 		std::cout << "-----------Determinant-----------" << std::endl;
-		std::cout << B.determinant() << std::endl;
+		std::cout << E.determinant() << std::endl;
 
 		std::cout << "-----------Transpose-----------" << std::endl;
 		std::cout << B.transpose() << std::endl;
 
-		std::cout << "-----------Reduction-----------" << std::endl;
-		std::cout << B.reduce(1, 1) << std::endl;
+		std::cout << "-----------Minor-----------" << std::endl;
+		std::cout << B.minor(1, 1) << std::endl;
 
 		std::cout << "-----------Adjoint-----------" << std::endl;
 		std::cout << B.adjoint() << std::endl;
 		
-		std::cout << "-----------Gaussian Elimination (May need some fixing)-----------" << std::endl;
-		std::cout << E.gaussEl() << std::endl;
+		std::cout << "-----------Row Echelon Form-----------" << std::endl;
+		std::cout << A.REF() << std::endl;
 		
 		std::cout << "-----------Rank-----------" << std::endl;
 		std::cout << A.rank() << std::endl;

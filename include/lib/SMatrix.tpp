@@ -2,6 +2,8 @@
 #include <exception>
 #include <initializer_list>
 
+#define COFACTOR(i, j) minor(i, j).determinant() * ((i + j) % 2 == 0 ? 1 : -1)
+
 /**
  * @brief Square Matrix class
  *
@@ -56,9 +58,9 @@ public:
 	static SMatrix<T> identity(size_t n);
 	T determinant() const;
 	SMatrix<T> transpose() const;
-	SMatrix<T> reduce(size_t i, size_t j) const;
+	SMatrix<T> minor(size_t i, size_t j) const;
 	SMatrix<T> adjoint() const;
-	SMatrix<T> gaussEl() const;
+	SMatrix<T> REF() const;
 
 	/* operator overload -- should not exceed O(n^2) */
 	// Implementations only consider square matrices of same size

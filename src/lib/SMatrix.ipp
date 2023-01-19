@@ -123,13 +123,18 @@ size_t SMatrix<T>::rank() const
 {
 	size_t rank = 0;
 
-	SMatrix<T> tmp = gaussEl();
+	SMatrix<T> tmp = REF();
 
 	for (size_t i = 0; i < n; ++i)
 		if (tmp(i, i) != 0)
 			++rank;
-		else break;
-
+		else
+			for (size_t j = i + 1; j < n; ++j)
+				if (tmp(i, j) != 0)
+				{
+					++rank;
+					break;
+				}
 	return rank;
 }
 
@@ -160,21 +165,10 @@ T SMatrix<T>::determinant() const
 			   data[0] * data[5] * data[7];
 
 	T det = 0;
+
 	for (size_t i = 0; i < n; ++i)
-	{
-		SMatrix<T> tmp(n - 1);
-		for (size_t j = 1; j < n; ++j)
-		{
-			for (size_t k = 0; k < n; ++k)
-			{
-				if (k < i)
-					tmp(j - 1, k) = data[j * n + k];
-				else if (k > i)
-					tmp(j - 1, k - 1) = data[j * n + k];
-			}
-		}
-		det += data[i] * tmp.determinant() * (i % 2 == 0 ? 1 : -1);
-	}
+		det += data[i] * COFACTOR(0, i);
+
 	return det;
 }
 
@@ -193,7 +187,7 @@ SMatrix<T> SMatrix<T>::transpose() const
 }
 
 template <typename T>
-SMatrix<T> SMatrix<T>::reduce(size_t i, size_t j) const
+SMatrix<T> SMatrix<T>::minor(size_t i, size_t j) const
 {
 	SMatrix<T> tmp(n - 1);
 	for (size_t k = 0; k < n; ++k)
@@ -221,14 +215,14 @@ SMatrix<T> SMatrix<T>::adjoint() const
 	{
 		for (size_t j = 0; j < n; ++j)
 		{
-			tmp(i, j) = reduce(i, j).determinant() * (i % 2 == j % 2 ? 1 : -1);
+			tmp(i, j) = COFACTOR(i, j);
 		}
 	}
 	return tmp.transpose();
 }
 
 template <typename T>
-SMatrix<T> SMatrix<T>::gaussEl() const
+SMatrix<T> SMatrix<T>::REF() const
 {
 	SMatrix<T> tmp(n);
 	tmp = *this;
