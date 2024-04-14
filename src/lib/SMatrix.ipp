@@ -227,43 +227,27 @@ SMatrix<T> SMatrix<T>::adjoint() const
 template <typename T>
 SMatrix<T> SMatrix<T>::REF() const
 {
-	SMatrix<T> tmp(n);
-	tmp = *this;
+	SMatrix<T> tmp = *this;
 
 	for (size_t i = 0; i < tmp.n; ++i)
 	{
-		if (tmp(i, i) != 0)
+		size_t j = i;
+		while (j < tmp.n && tmp(j, i) == 0)
+			++j;
+		if (j == tmp.n)
+			continue;
+		tmp.swapRows(i, j);
+
+		for (size_t j = i + 1; j < tmp.n; ++j)
 		{
-			for (size_t j = i + 1; j < tmp.n; ++j)
+			T factor = tmp(j, i) / tmp(i, i);
+			for (size_t k = i; k < tmp.n; ++k)
 			{
-				T factor = tmp(j, i) / tmp(i, i);
-				for (size_t k = i; k < tmp.n; ++k)
-				{
-					tmp(j, k) -= factor * tmp(i, k);
-				}
-			}
-		}
-		else
-		{
-			bool non_zero_found = false;
-			for (size_t j = i + 1; j < tmp.n; ++j)
-			{
-				if (tmp(j, i) != 0)
-				{
-					non_zero_found = true;
-					tmp.swapRows(i, j);
-					break;
-				}
-			}
-			if (!non_zero_found)
-			{
-				for (size_t j = i; j < tmp.n; ++j)
-				{
-					tmp(j, i) = 0;
-				}
+				tmp(j, k) -= factor * tmp(i, k);
 			}
 		}
 	}
+
 	return tmp;
 }
 
