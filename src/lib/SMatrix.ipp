@@ -266,3 +266,47 @@ SMatrix<T> SMatrix<T>::REF() const
 	}
 	return tmp;
 }
+
+template <typename T>
+SMatrix<T> SMatrix<T>::RREF() const
+{
+	SMatrix<T> tmp = REF();
+
+	for (size_t i = 0; i < tmp.n; ++i)
+	{
+		if (tmp(i, i) != 0)
+		{
+			T factor = 1 / tmp(i, i);
+			for (size_t j = i; j < tmp.n; ++j)
+			{
+				tmp(i, j) *= factor;
+			}
+		}
+	}
+
+	for (size_t i = 0; i < tmp.n; ++i)
+	{
+		for (size_t j = i + 1; j < tmp.n; ++j)
+		{
+			T factor = tmp(j, i) / tmp(i, i);
+			for (size_t k = i; k < tmp.n; ++k)
+			{
+				tmp(j, k) -= factor * tmp(i, k);
+			}
+		}
+	}
+
+	for (size_t i = tmp.n - 1; i > 0; --i)
+	{
+		for (size_t j = i - 1; j < tmp.n; --j)
+		{
+			T factor = tmp(j, i) / tmp(i, i);
+			for (size_t k = i; k < tmp.n; ++k)
+			{
+				tmp(j, k) -= factor * tmp(i, k);
+			}
+		}
+	}
+
+	return tmp;
+}

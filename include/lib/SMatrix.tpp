@@ -72,6 +72,7 @@ public:
 	SMatrix<T> minor(size_t i, size_t j) const;
 	SMatrix<T> adjoint() const;
 	SMatrix<T> REF() const;
+	SMatrix<T> RREF() const;
 
 	/* operator overload -- should not exceed O(n^2) */
 	// Implementations only consider square matrices of same size

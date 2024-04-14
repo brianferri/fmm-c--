@@ -77,6 +77,9 @@ int main()
 		std::cout << "-----------Row Echelon Form-----------" << std::endl;
 		std::cout << A.REF() << std::endl;
 
+		std::cout << "-----------Reduced Row Echelon Form-----------" << std::endl;
+		std::cout << A.RREF() << std::endl;
+
 		std::cout << "-----------Rank-----------" << std::endl;
 		std::cout << A.rank() << std::endl;
 		std::cout << B.rank() << std::endl;
