@@ -10,9 +10,6 @@
  * @tparam T type of data the matrix will hold
  *
  * @note the matrix is stored in a 1D array which maps to a 2D array
- * @note a matrix will have at least have O(n^2) computational complexity
- * 	for any given operation (except lookup)
- * 	due to the fact that it is a square matrix
  */
 template <typename T>
 class SquareMatrix
