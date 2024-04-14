@@ -11,7 +11,7 @@
  *
  * @note the matrix is stored in a 1D array which maps to a 2D set
  * @note a matrix will have at least have O(n^2) computational complexity
- * 	for any given operation
+ * 	for any given operation (except lookup)
  * 	due to the fact that it is a square matrix
  */
 template <typename T>
@@ -20,7 +20,10 @@ class SMatrix
 public:
 	/* class alloc */
 
-	SMatrix<T>(std::initializer_list<std::initializer_list<T>> list) : n(list.size()), data(new T[n * n])
+	SMatrix(size_t n) : n(n), data(new T[n * n]) {}
+	SMatrix(size_t n, T value) : n(n), data(new T[n * n]) { fill(value); }
+	SMatrix() : n(0), data(nullptr) {}
+	SMatrix(std::initializer_list<std::initializer_list<T>> list) : n(list.size()), data(new T[n * n])
 	{
 		if (list.size() == 0)
 			throw std::invalid_argument("Matrix must have at least one row!");
@@ -38,8 +41,16 @@ public:
 			++i;
 		}
 	}
-	SMatrix(size_t n) : n(n), data(new T[n * n]) { fill(0); }
-	SMatrix() : n(0), data(nullptr) {}
+	SMatrix(const SMatrix<T> &m) : n(m.size()), data(new T[n * n])
+	{
+		for (size_t i = 0; i < n; ++i)
+		{
+			for (size_t j = 0; j < n; ++j)
+			{
+				data[i * n + j] = m(i, j);
+			}
+		}
+	}
 	~SMatrix() { delete[] data; }
 
 	/* util */
@@ -64,7 +75,6 @@ public:
 
 	/* operator overload -- should not exceed O(n^2) */
 	// Implementations only consider square matrices of same size
-	
 	T operator()(size_t i, size_t j) const { return data[i * n + j]; }
 	T &operator()(size_t i, size_t j)
 	{
@@ -72,15 +82,23 @@ public:
 			throw std::range_error("Index out of range!");
 		return data[i * n + j];
 	}
+	T operator[](size_t i) const { return data[i]; }
+	T &operator[](size_t i)
+	{
+		if (i >= n * n || i < 0)
+			throw std::range_error("Index out of range!");
+		return data[i];
+	}
 
 	SMatrix<T> &operator=(const SMatrix<T> &m)
 	{
-		if (this == &m)
-			return *this;
-
-		delete[] data;
-		n = m.size();
-		data = new T[n * n];
+		if (this == &m) return *this;
+		if (n != m.size())
+		{
+			delete[] data;
+			n = m.size();
+			data = new T[n * n];
+		}
 		for (size_t i = 0; i < n; ++i)
 		{
 			for (size_t j = 0; j < n; ++j)
@@ -93,14 +111,23 @@ public:
 
 	friend std::ostream &operator<<(std::ostream &os, const SMatrix &m)
 	{
+		os << "[";
 		for (size_t i = 0; i < m.size(); ++i)
 		{
+			if (i > 0)
+				os << " ";
+			os << "[";
 			for (size_t j = 0; j < m.size(); ++j)
 			{
-				os << m(i, j) << " ";
+				os << m(i, j);
+				if (j < m.size() - 1)
+					os << ", ";
 			}
-			os << std::endl;
+			os << "]";
+			if (i < m.size() - 1)
+				os << std::endl;
 		}
+		os << "]";
 		return os;
 	}
 

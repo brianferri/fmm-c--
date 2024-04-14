@@ -1,6 +1,8 @@
 template <typename T>
 void SMatrix<T>::fill(T value)
 {
+	if (n == 0)
+		throw std::invalid_argument("Matrix must have at least one row!");
 	for (size_t i = 0; i < n; ++i)
 	{
 		for (size_t j = 0; j < n; ++j)
@@ -154,7 +156,8 @@ T SMatrix<T>::determinant() const
 	if (n == 1)
 		return data[0];
 	if (n == 2)
-		return data[0] * data[3] - data[1] * data[2];
+		return data[0] * data[3] -
+			   data[1] * data[2];
 	// Sarrus rule
 	if (n == 3)
 		return data[0] * data[4] * data[8] +
