@@ -32,8 +32,8 @@ PROG_SOURCES := $(wildcard src/*/*.cpp)
 OBJECTS := $(patsubst src/%.cpp, build/%.o, $(PROG_SOURCES))
 DEPENDENCIES := $(patsubst src/%.cpp, build/%.d, $(PROG_SOURCES))
 
-all: prepare dirs main run clean
-	
+all: clean prepare dirs main run
+
 -include $(call FixPath,$(DEPENDENCIES))
 
 prepare:
