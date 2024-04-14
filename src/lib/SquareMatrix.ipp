@@ -1,5 +1,5 @@
 template <typename T>
-void SMatrix<T>::fill(T value)
+void SquareMatrix<T>::fill(T value)
 {
 	if (n == 0)
 		throw std::invalid_argument("Matrix must have at least one row!");
@@ -13,14 +13,14 @@ void SMatrix<T>::fill(T value)
 }
 
 template <typename T>
-void SMatrix<T>::crop(size_t n)
+void SquareMatrix<T>::crop(size_t n)
 {
 	if (n < this->n)
 		throw std::invalid_argument("If you want to trim, use trim()!");
 	if (n == this->n)
 		return;
 
-	SMatrix<T> tmp(n);
+	SquareMatrix<T> tmp(n);
 	tmp.fill(0);
 	for (size_t i = 0; i < this->n; ++i)
 	{
@@ -36,14 +36,14 @@ void SMatrix<T>::crop(size_t n)
 }
 
 template <typename T>
-void SMatrix<T>::trim(size_t n)
+void SquareMatrix<T>::trim(size_t n)
 {
 	if (n > this->n)
 		throw std::invalid_argument("If you want to crop, use crop()!");
 	if (n == this->n)
 		return;
 
-	SMatrix<T> tmp(n);
+	SquareMatrix<T> tmp(n);
 	for (size_t i = 0; i < n; ++i)
 	{
 		for (size_t j = 0; j < n; ++j)
@@ -58,10 +58,10 @@ void SMatrix<T>::trim(size_t n)
 }
 
 template <typename T>
-SMatrix<T> *SMatrix<T>::split() const
+SquareMatrix<T> *SquareMatrix<T>::split() const
 {
 	size_t n = this->n % 2 == 0 ? this->n / 2 : this->n / 2 + 1;
-	SMatrix<T> *m = new SMatrix<T>[4];
+	SquareMatrix<T> *m = new SquareMatrix<T>[4];
 	for (size_t i = 0; i < 4; ++i)
 		m[i].crop(n);
 
@@ -83,9 +83,9 @@ SMatrix<T> *SMatrix<T>::split() const
 }
 
 template <typename T>
-SMatrix<T> SMatrix<T>::merge(SMatrix<T> *m)
+SquareMatrix<T> SquareMatrix<T>::merge(SquareMatrix<T> *m)
 {
-	SMatrix<T> tmp(m[0].n * 2);
+	SquareMatrix<T> tmp(m[0].n * 2);
 
 	for (size_t i = 0; i < tmp.n; ++i)
 	{
@@ -105,7 +105,7 @@ SMatrix<T> SMatrix<T>::merge(SMatrix<T> *m)
 }
 
 template <typename T>
-void SMatrix<T>::swapRows(size_t i, size_t j)
+void SquareMatrix<T>::swapRows(size_t i, size_t j)
 {
 	if (i >= n || j >= n)
 		throw std::invalid_argument("Index out of range!");
@@ -121,11 +121,11 @@ void SMatrix<T>::swapRows(size_t i, size_t j)
 }
 
 template <typename T>
-size_t SMatrix<T>::rank() const
+size_t SquareMatrix<T>::rank() const
 {
 	size_t rank = 0;
 
-	SMatrix<T> tmp = REF();
+	SquareMatrix<T> tmp = REF();
 
 	for (size_t i = 0; i < n; ++i)
 		if (tmp(i, i) != 0)
@@ -141,9 +141,9 @@ size_t SMatrix<T>::rank() const
 }
 
 template <typename T>
-SMatrix<T> SMatrix<T>::identity(size_t n)
+SquareMatrix<T> SquareMatrix<T>::identity(size_t n)
 {
-	SMatrix<T> tmp(n);
+	SquareMatrix<T> tmp(n);
 	tmp.fill(0);
 	for (size_t i = 0; i < n; ++i)
 		tmp(i, i) = 1;
@@ -151,7 +151,7 @@ SMatrix<T> SMatrix<T>::identity(size_t n)
 }
 
 template <typename T>
-T SMatrix<T>::determinant() const
+T SquareMatrix<T>::determinant() const
 {
 	if (n == 1)
 		return data[0];
@@ -176,9 +176,9 @@ T SMatrix<T>::determinant() const
 }
 
 template <typename T>
-SMatrix<T> SMatrix<T>::transpose() const
+SquareMatrix<T> SquareMatrix<T>::transpose() const
 {
-	SMatrix<T> tmp(n);
+	SquareMatrix<T> tmp(n);
 	for (size_t i = 0; i < n; ++i)
 	{
 		for (size_t j = 0; j < n; ++j)
@@ -190,9 +190,9 @@ SMatrix<T> SMatrix<T>::transpose() const
 }
 
 template <typename T>
-SMatrix<T> SMatrix<T>::minor(size_t i, size_t j) const
+SquareMatrix<T> SquareMatrix<T>::minor(size_t i, size_t j) const
 {
-	SMatrix<T> tmp(n - 1);
+	SquareMatrix<T> tmp(n - 1);
 	for (size_t k = 0; k < n; ++k)
 	{
 		for (size_t l = 0; l < n; ++l)
@@ -211,9 +211,9 @@ SMatrix<T> SMatrix<T>::minor(size_t i, size_t j) const
 }
 
 template <typename T>
-SMatrix<T> SMatrix<T>::adjoint() const
+SquareMatrix<T> SquareMatrix<T>::adjoint() const
 {
-	SMatrix<T> tmp(n);
+	SquareMatrix<T> tmp(n);
 	for (size_t i = 0; i < n; ++i)
 	{
 		for (size_t j = 0; j < n; ++j)
@@ -225,9 +225,9 @@ SMatrix<T> SMatrix<T>::adjoint() const
 }
 
 template <typename T>
-SMatrix<T> SMatrix<T>::REF() const
+SquareMatrix<T> SquareMatrix<T>::REF() const
 {
-	SMatrix<T> tmp = *this;
+	SquareMatrix<T> tmp = *this;
 
 	for (size_t i = 0; i < tmp.n; ++i)
 	{
@@ -252,9 +252,9 @@ SMatrix<T> SMatrix<T>::REF() const
 }
 
 template <typename T>
-SMatrix<T> SMatrix<T>::RREF() const
+SquareMatrix<T> SquareMatrix<T>::RREF() const
 {
-	SMatrix<T> tmp = REF();
+	SquareMatrix<T> tmp = REF();
 
 	for (size_t i = 0; i < tmp.n; ++i)
 	{
@@ -296,13 +296,13 @@ SMatrix<T> SMatrix<T>::RREF() const
 }
 
 template <typename T>
-SMatrix<T> SMatrix<T>::inverse() const
+SquareMatrix<T> SquareMatrix<T>::inverse() const
 {
 	T det = determinant();
 	if (det == 0)
 		throw std::range_error("Matrix is singular!");
 
-	SMatrix<T> tmp(n);
+	SquareMatrix<T> tmp(n);
 	for (size_t i = 0; i < n; ++i)
 	{
 		for (size_t j = 0; j < n; ++j)
@@ -314,9 +314,9 @@ SMatrix<T> SMatrix<T>::inverse() const
 }
 
 template <typename T>
-SMatrix<T> SMatrix<T>::kronecker(const SMatrix<T> &A, const SMatrix<T> &B)
+SquareMatrix<T> SquareMatrix<T>::kronecker(const SquareMatrix<T> &A, const SquareMatrix<T> &B)
 {
-	SMatrix<T> tmp(A.n * B.n);
+	SquareMatrix<T> tmp(A.n * B.n);
 	for (size_t i = 0; i < A.n; ++i)
 	{
 		for (size_t j = 0; j < A.n; ++j)

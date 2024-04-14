@@ -1,11 +1,11 @@
 template <typename T>
-SMatrix<T> fmm::multIt(const SMatrix<T> &A, const SMatrix<T> &B)
+SquareMatrix<T> fmm::mult(const SquareMatrix<T> &A, const SquareMatrix<T> &B)
 {
 	if (A.size() != B.size())
 		throw std::range_error("Sizes are incompatible! > IT");
 
 	size_t n = A.size();
-	SMatrix<T> C(n);
+	SquareMatrix<T> C(n);
 	C.fill(0);
 
 	for (size_t i = 0; i < n; ++i)
@@ -22,25 +22,25 @@ SMatrix<T> fmm::multIt(const SMatrix<T> &A, const SMatrix<T> &B)
 }
 
 template <typename T>
-SMatrix<T> fmm::multSt(const SMatrix<T> &A, const SMatrix<T> &B)
+SquareMatrix<T> fmm::strassen(const SquareMatrix<T> &A, const SquareMatrix<T> &B)
 {
 	if (A.size() != B.size())
 		throw std::range_error("Sizes are incompatible! > ST");
 	if (A.size() == 1)
 		return { { A(0, 0) * B(0, 0) } };
 
-	SMatrix<T> *a = A.split();
-	SMatrix<T> *b = B.split();
+	SquareMatrix<T> *a = A.split();
+	SquareMatrix<T> *b = B.split();
 
-	SMatrix<T> p1 = multSt(a[0] + a[3], b[0] + b[3]);
-	SMatrix<T> p2 = multSt(a[2] + a[3], b[0]);
-	SMatrix<T> p3 = multSt(a[0], b[1] - b[3]);
-	SMatrix<T> p4 = multSt(a[3], b[2] - b[0]);
-	SMatrix<T> p5 = multSt(a[0] + a[1], b[3]);
-	SMatrix<T> p6 = multSt(a[2] - a[0], b[0] + b[1]);
-	SMatrix<T> p7 = multSt(a[1] - a[3], b[2] + b[3]);
+	SquareMatrix<T> p1 = strassen(a[0] + a[3], b[0] + b[3]);
+	SquareMatrix<T> p2 = strassen(a[2] + a[3], b[0]);
+	SquareMatrix<T> p3 = strassen(a[0], b[1] - b[3]);
+	SquareMatrix<T> p4 = strassen(a[3], b[2] - b[0]);
+	SquareMatrix<T> p5 = strassen(a[0] + a[1], b[3]);
+	SquareMatrix<T> p6 = strassen(a[2] - a[0], b[0] + b[1]);
+	SquareMatrix<T> p7 = strassen(a[1] - a[3], b[2] + b[3]);
 
-	SMatrix<T> *c = new SMatrix<T>[4];
+	SquareMatrix<T> *c = new SquareMatrix<T>[4];
 	c[0] = p1 + p4 - p5 + p7;
 	c[1] = p3 + p5;
 	c[2] = p2 + p4;
@@ -49,7 +49,7 @@ SMatrix<T> fmm::multSt(const SMatrix<T> &A, const SMatrix<T> &B)
 	delete[] a;
 	delete[] b;
 
-	SMatrix<T> m = SMatrix<T>::merge(c);
+	SquareMatrix<T> m = SquareMatrix<T>::merge(c);
 	m.trim(A.size());
 	return m;
 }

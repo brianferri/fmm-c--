@@ -15,15 +15,15 @@
  * 	due to the fact that it is a square matrix
  */
 template <typename T>
-class SMatrix
+class SquareMatrix
 {
 public:
 	/* class alloc */
 
-	SMatrix(size_t n) : n(n), data(new T[n * n]) {}
-	SMatrix(size_t n, T value) : n(n), data(new T[n * n]) { fill(value); }
-	SMatrix() : n(0), data(nullptr) {}
-	SMatrix(std::initializer_list<std::initializer_list<T>> list) : n(list.size()), data(new T[n * n])
+	SquareMatrix(size_t n) : n(n), data(new T[n * n]) {}
+	SquareMatrix(size_t n, T value) : n(n), data(new T[n * n]) { fill(value); }
+	SquareMatrix() : n(0), data(nullptr) {}
+	SquareMatrix(std::initializer_list<std::initializer_list<T>> list) : n(list.size()), data(new T[n * n])
 	{
 		if (list.size() == 0)
 			throw std::invalid_argument("Matrix must have at least one row!");
@@ -41,7 +41,7 @@ public:
 			++i;
 		}
 	}
-	SMatrix(const SMatrix<T> &m) : n(m.size()), data(new T[n * n])
+	SquareMatrix(const SquareMatrix<T> &m) : n(m.size()), data(new T[n * n])
 	{
 		for (size_t i = 0; i < n; ++i)
 		{
@@ -51,7 +51,7 @@ public:
 			}
 		}
 	}
-	~SMatrix() { delete[] data; }
+	~SquareMatrix() { delete[] data; }
 
 	/* util */
 
@@ -59,41 +59,41 @@ public:
 	void fill(T value);
 	void crop(size_t n);
 	void trim(size_t n);
-	SMatrix<T> *split() const;
-	static SMatrix<T> merge(SMatrix<T> *m);
+	SquareMatrix<T> *split() const;
+	static SquareMatrix<T> merge(SquareMatrix<T> *m);
 	void swapRows(size_t i, size_t j);
 	size_t rank() const;
 
 	/* matrix operations and algorithms */
 
-	static SMatrix<T> identity(size_t n);
-	static SMatrix<T> kronecker(const SMatrix<T> &A, const SMatrix<T> &B);
+	static SquareMatrix<T> identity(size_t n);
+	static SquareMatrix<T> kronecker(const SquareMatrix<T> &A, const SquareMatrix<T> &B);
 	T determinant() const;
-	SMatrix<T> transpose() const;
-	SMatrix<T> minor(size_t i, size_t j) const;
-	SMatrix<T> adjoint() const;
-	SMatrix<T> REF() const;
-	SMatrix<T> RREF() const;
-	SMatrix<T> inverse() const;
+	SquareMatrix<T> transpose() const;
+	SquareMatrix<T> minor(size_t i, size_t j) const;
+	SquareMatrix<T> adjoint() const;
+	SquareMatrix<T> REF() const;
+	SquareMatrix<T> RREF() const;
+	SquareMatrix<T> inverse() const;
 
 	/* operator overload -- should not exceed O(n^2) */
 	// Implementations only consider square matrices of same size
 	T operator()(size_t i, size_t j) const { return data[i * n + j]; }
 	T &operator()(size_t i, size_t j)
 	{
-		if ((i >= n || j >= n) || (i < 0 || j < 0))
+		if (i >= n || j >= n)
 			throw std::range_error("Index out of range!");
 		return data[i * n + j];
 	}
 	T operator[](size_t i) const { return data[i]; }
 	T &operator[](size_t i)
 	{
-		if (i >= n * n || i < 0)
+		if (i >= n * n)
 			throw std::range_error("Index out of range!");
 		return data[i];
 	}
 
-	SMatrix<T> &operator=(const SMatrix<T> &m)
+	SquareMatrix<T> &operator=(const SquareMatrix<T> &m)
 	{
 		if (this == &m) return *this;
 		if (n != m.size())
@@ -112,7 +112,7 @@ public:
 		return *this;
 	}
 
-	friend std::ostream &operator<<(std::ostream &os, const SMatrix &m)
+	friend std::ostream &operator<<(std::ostream &os, const SquareMatrix &m)
 	{
 		os << "[";
 		for (size_t i = 0; i < m.size(); ++i)
@@ -134,13 +134,13 @@ public:
 		return os;
 	}
 
-	friend SMatrix<T> operator+(const SMatrix<T> &A, const SMatrix<T> &B)
+	friend SquareMatrix<T> operator+(const SquareMatrix<T> &A, const SquareMatrix<T> &B)
 	{
 		if (A.size() != B.size())
 			throw std::range_error("Sizes are incompatible! > +");
 
 		size_t n = A.size();
-		SMatrix<T> C(n);
+		SquareMatrix<T> C(n);
 		for (size_t i = 0; i < n; ++i)
 		{
 			for (size_t j = 0; j < n; ++j)
@@ -151,7 +151,7 @@ public:
 		return C;
 	}
 
-	friend SMatrix<T> operator+=(SMatrix<T> &A, const SMatrix<T> &B)
+	friend SquareMatrix<T> operator+=(SquareMatrix<T> &A, const SquareMatrix<T> &B)
 	{
 		if (A.size() != B.size())
 			throw std::range_error("Sizes are incompatible! > +=");
@@ -167,13 +167,13 @@ public:
 		return A;
 	}
 
-	friend SMatrix<T> operator-(const SMatrix<T> &A, const SMatrix<T> &B)
+	friend SquareMatrix<T> operator-(const SquareMatrix<T> &A, const SquareMatrix<T> &B)
 	{
 		if (A.size() != B.size())
 			throw std::range_error("Sizes are incompatible! > -");
 
 		size_t n = A.size();
-		SMatrix<T> C(n);
+		SquareMatrix<T> C(n);
 		for (size_t i = 0; i < n; ++i)
 		{
 			for (size_t j = 0; j < n; ++j)
@@ -184,7 +184,7 @@ public:
 		return C;
 	}
 
-	friend SMatrix<T> operator-=(SMatrix<T> &A, const SMatrix<T> &B)
+	friend SquareMatrix<T> operator-=(SquareMatrix<T> &A, const SquareMatrix<T> &B)
 	{
 		if (A.size() != B.size())
 			throw std::range_error("Sizes are incompatible! > -=");
@@ -200,10 +200,10 @@ public:
 		return A;
 	}
 
-	friend SMatrix<T> operator*(const SMatrix<T> &A, const T &k)
+	friend SquareMatrix<T> operator*(const SquareMatrix<T> &A, const T &k)
 	{
 		size_t n = A.size();
-		SMatrix<T> C(n);
+		SquareMatrix<T> C(n);
 		for (size_t i = 0; i < n; ++i)
 		{
 			for (size_t j = 0; j < n; ++j)
@@ -214,10 +214,10 @@ public:
 		return C;
 	}
 
-	friend SMatrix<T> operator*(const T &k, const SMatrix<T> &A)
+	friend SquareMatrix<T> operator*(const T &k, const SquareMatrix<T> &A)
 	{
 		size_t n = A.size();
-		SMatrix<T> C(n);
+		SquareMatrix<T> C(n);
 		for (size_t i = 0; i < n; ++i)
 		{
 			for (size_t j = 0; j < n; ++j)
@@ -228,10 +228,10 @@ public:
 		return C;
 	}
 
-	friend SMatrix<T> operator/(const SMatrix<T> &A, const T &k)
+	friend SquareMatrix<T> operator/(const SquareMatrix<T> &A, const T &k)
 	{
 		size_t n = A.size();
-		SMatrix<T> C(n);
+		SquareMatrix<T> C(n);
 		for (size_t i = 0; i < n; ++i)
 		{
 			for (size_t j = 0; j < n; ++j)
@@ -242,10 +242,10 @@ public:
 		return C;
 	}
 
-	friend SMatrix<T> operator/(const T &k, const SMatrix<T> &A)
+	friend SquareMatrix<T> operator/(const T &k, const SquareMatrix<T> &A)
 	{
 		size_t n = A.size();
-		SMatrix<T> C(n);
+		SquareMatrix<T> C(n);
 		for (size_t i = 0; i < n; ++i)
 		{
 			for (size_t j = 0; j < n; ++j)
@@ -261,4 +261,4 @@ protected:
 	T *data;
 };
 
-#include "../../src/lib/SMatrix.ipp"
+#include "../../src/lib/SquareMatrix.ipp"

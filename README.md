@@ -29,7 +29,7 @@ There might (will) be bugs in the code and a lot of space for optimisation.
 - Strassen's multiplication
 - Schonhage Laser Method multiplication (TODO)
 
-## Matrix Operations (SMatrix)
+## Matrix Operations (SquareMatrix)
 
 - Addition/Subtraction
 - Multiplication by a scalar
@@ -43,6 +43,6 @@ There might (will) be bugs in the code and a lot of space for optimisation.
 - Reduction (remove \[i]\[j] row and column)
 - Identity (n-th order)
 - Inverse
-- Base (TODO)
 - Kronecker Product
+- Hadamard Product
 - Some other stuff... (read the code)

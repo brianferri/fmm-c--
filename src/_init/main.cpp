@@ -5,11 +5,11 @@ using namespace fmm;
 int main()
 {
 	/* Init */
-	SMatrix<double> A({{1, 3, 2},
+	SquareMatrix<double> A({{1, 3, 2},
 					   {2, 0, 1},
 					   {1, 2, 0}});
 
-	SMatrix<double> B({{3, 0, 1},
+	SquareMatrix<double> B({{3, 0, 1},
 					   {1, 0, 1},
 					   {0, 1, 2}});
 
@@ -32,7 +32,7 @@ int main()
 		std::cout << A.inverse() << std::endl;
 
 		std::cout << "-----------Split-----------" << std::endl;
-		SMatrix<double> *C = B.split();
+		SquareMatrix<double> *C = B.split();
 		for (size_t i = 0; i < 4; ++i)
 			std::cout << C[i] << std::endl;
 
@@ -44,8 +44,8 @@ int main()
 		}
 
 		std::cout << "-----------Merge-----------" << std::endl;
-		SMatrix<double> D(4);
-		D = SMatrix<double>::merge(C);
+		SquareMatrix<double> D(4);
+		D = SquareMatrix<double>::merge(C);
 		std::cout << D << std::endl;
 
 		std::cout << "-----------SwapRows-----------" << std::endl;
@@ -53,7 +53,7 @@ int main()
 		std::cout << D << std::endl;
 
 		std::cout << "-----------Sum-----------" << std::endl;
-		SMatrix<double> E = C[0] + C[1];
+		SquareMatrix<double> E = C[0] + C[1];
 		std::cout << E << std::endl;
 
 		std::cout << "-----------Sub-----------" << std::endl;
@@ -89,42 +89,42 @@ int main()
 		std::cout << (A + B).rank() << std::endl;
 
 		std::cout << "-----------Naive-----------" << std::endl;
-		D = multIt(A, B);
+		D = mult(A, B);
 		std::cout << D << std::endl;
 
 		std::cout << "-----------Strassen-----------" << std::endl;
-		E = multSt(A, B);
+		E = strassen(A, B);
 		std::cout << E << std::endl;
 
 		std::cout << "-----------Kronecker-----------" << std::endl;
-		std::cout << SMatrix<double>::kronecker(A, B) << std::endl;
+		std::cout << SquareMatrix<double>::kronecker(A, B) << std::endl;
 
 		std::cout << "-----------3 Dimensional Matrix-----------" << std::endl;
-		SMatrix<SMatrix<double> > F(2);
+		SquareMatrix<SquareMatrix<double> > F(2);
 		F[0] = A;
 		F[1] = B;
 		std::cout << F << std::endl;
 
 		std::cout << "-----------3 Dimensional Matrix By List Initializer-----------" << std::endl;
-		SMatrix<SMatrix<double> > G({{A, B},
+		SquareMatrix<SquareMatrix<double> > G({{A, B},
 									 {B, A}});
 		std::cout << G << std::endl;
 
 		std::cout << "-----------3 Dimensional Matrix By Default Constructor-----------" << std::endl;
-		SMatrix<SMatrix<double> > H = SMatrix<SMatrix<double> >(2);
+		SquareMatrix<SquareMatrix<double> > H = SquareMatrix<SquareMatrix<double> >(2);
 		H[0] = A;
 		H[1] = B;
 		std::cout << H << std::endl;
 
 		std::cout << "-----------3 Dimensional Matrix By Pointer-----------" << std::endl;
-		SMatrix<SMatrix<double> >* I = new SMatrix<SMatrix<double> >(2);
+		SquareMatrix<SquareMatrix<double> >* I = new SquareMatrix<SquareMatrix<double> >(2);
 		(*I)[0] = A;
 		(*I)[1] = B;
 		std::cout << *I << std::endl;
 
 		std::cout << "-----------End-----------" << std::endl;
 	}
-	catch (std::runtime_error err)
+	catch (std::exception &err)
 	{
 		std::cout << "Error: " << err.what() << std::endl;
 	}
