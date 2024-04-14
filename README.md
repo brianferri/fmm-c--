@@ -44,6 +44,5 @@ There might (will) be bugs in the code and a lot of space for optimisation.
 - Identity (n-th order)
 - Inverse
 - Base (TODO)
-- Tensor Product (TODO)
 - Kronecker Product (TODO)
 - Some other stuff... (read the code)
