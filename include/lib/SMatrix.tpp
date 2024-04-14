@@ -67,6 +67,7 @@ public:
 	/* matrix operations and algorithms */
 
 	static SMatrix<T> identity(size_t n);
+	static SMatrix<T> kronecker(const SMatrix<T> &A, const SMatrix<T> &B);
 	T determinant() const;
 	SMatrix<T> transpose() const;
 	SMatrix<T> minor(size_t i, size_t j) const;

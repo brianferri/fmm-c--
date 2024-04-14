@@ -96,6 +96,9 @@ int main()
 		E = multSt(A, B);
 		std::cout << E << std::endl;
 
+		std::cout << "-----------Kronecker-----------" << std::endl;
+		std::cout << SMatrix<double>::kronecker(A, B) << std::endl;
+
 		std::cout << "-----------3 Dimensional Matrix-----------" << std::endl;
 		SMatrix<SMatrix<double> > F(2);
 		F[0] = A;

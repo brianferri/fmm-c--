@@ -312,3 +312,23 @@ SMatrix<T> SMatrix<T>::inverse() const
 	}
 	return tmp;
 }
+
+template <typename T>
+SMatrix<T> SMatrix<T>::kronecker(const SMatrix<T> &A, const SMatrix<T> &B)
+{
+	SMatrix<T> tmp(A.n * B.n);
+	for (size_t i = 0; i < A.n; ++i)
+	{
+		for (size_t j = 0; j < A.n; ++j)
+		{
+			for (size_t k = 0; k < B.n; ++k)
+			{
+				for (size_t l = 0; l < B.n; ++l)
+				{
+					tmp(i * B.n + k, j * B.n + l) = A(i, j) * B(k, l);
+				}
+			}
+		}
+	}
+	return tmp;
+}
