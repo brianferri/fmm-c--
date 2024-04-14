@@ -73,10 +73,10 @@ int main()
 
 		std::cout << "-----------Adjoint-----------" << std::endl;
 		std::cout << B.adjoint() << std::endl;
-		
+
 		std::cout << "-----------Row Echelon Form-----------" << std::endl;
 		std::cout << A.REF() << std::endl;
-		
+
 		std::cout << "-----------Rank-----------" << std::endl;
 		std::cout << A.rank() << std::endl;
 		std::cout << B.rank() << std::endl;
@@ -90,6 +90,29 @@ int main()
 		E = multSt(A, B);
 		E.trim(A.size()); // TODO: Fix this (trim() should be called automatically)
 		std::cout << E << std::endl;
+
+		std::cout << "-----------3 Dimensional Matrix-----------" << std::endl;
+		SMatrix<SMatrix<double> > F(2);
+		F[0] = A;
+		F[1] = B;
+		std::cout << F << std::endl;
+
+		std::cout << "-----------3 Dimensional Matrix By List Initializer-----------" << std::endl;
+		SMatrix<SMatrix<double> > G({{A, B},
+									 {B, A}});
+		std::cout << G << std::endl;
+
+		std::cout << "-----------3 Dimensional Matrix By Default Constructor-----------" << std::endl;
+		SMatrix<SMatrix<double> > H = SMatrix<SMatrix<double> >(2);
+		H[0] = A;
+		H[1] = B;
+		std::cout << H << std::endl;
+
+		std::cout << "-----------3 Dimensional Matrix By Pointer-----------" << std::endl;
+		SMatrix<SMatrix<double> >* I = new SMatrix<SMatrix<double> >(2);
+		(*I)[0] = A;
+		(*I)[1] = B;
+		std::cout << *I << std::endl;
 
 		std::cout << "-----------End-----------" << std::endl;
 	}
