@@ -294,3 +294,21 @@ SMatrix<T> SMatrix<T>::RREF() const
 
 	return tmp;
 }
+
+template <typename T>
+SMatrix<T> SMatrix<T>::inverse() const
+{
+	T det = determinant();
+	if (det == 0)
+		throw std::range_error("Matrix is singular!");
+
+	SMatrix<T> tmp(n);
+	for (size_t i = 0; i < n; ++i)
+	{
+		for (size_t j = 0; j < n; ++j)
+		{
+			tmp(i, j) = COFACTOR(j, i) / det;
+		}
+	}
+	return tmp;
+}

@@ -28,6 +28,9 @@ int main()
 		A.trim(3);
 		std::cout << A << std::endl;
 
+		std::cout << "-----------Inverse-----------" << std::endl;
+		std::cout << A.inverse() << std::endl;
+
 		std::cout << "-----------Split-----------" << std::endl;
 		SMatrix<double> *C = B.split();
 		for (size_t i = 0; i < 4; ++i)

@@ -42,7 +42,7 @@ There might (will) be bugs in the code and a lot of space for optimisation.
 - merge (Merges 4 submatrices into a single matrix)
 - Reduction (remove \[i]\[j] row and column)
 - Identity (n-th order)
-- Inverse (TODO)
+- Inverse
 - Base (TODO)
 - Tensor Product (TODO)
 - Kronecker Product (TODO)

@@ -73,6 +73,7 @@ public:
 	SMatrix<T> adjoint() const;
 	SMatrix<T> REF() const;
 	SMatrix<T> RREF() const;
+	SMatrix<T> inverse() const;
 
 	/* operator overload -- should not exceed O(n^2) */
 	// Implementations only consider square matrices of same size
@@ -221,6 +222,34 @@ public:
 			for (size_t j = 0; j < n; ++j)
 			{
 				C(i, j) = A(i, j) * k;
+			}
+		}
+		return C;
+	}
+
+	friend SMatrix<T> operator/(const SMatrix<T> &A, const T &k)
+	{
+		size_t n = A.size();
+		SMatrix<T> C(n);
+		for (size_t i = 0; i < n; ++i)
+		{
+			for (size_t j = 0; j < n; ++j)
+			{
+				C(i, j) = A(i, j) / k;
+			}
+		}
+		return C;
+	}
+
+	friend SMatrix<T> operator/(const T &k, const SMatrix<T> &A)
+	{
+		size_t n = A.size();
+		SMatrix<T> C(n);
+		for (size_t i = 0; i < n; ++i)
+		{
+			for (size_t j = 0; j < n; ++j)
+			{
+				C(i, j) = A(i, j) / k;
 			}
 		}
 		return C;
