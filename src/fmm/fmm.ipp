@@ -49,5 +49,7 @@ SMatrix<T> fmm::multSt(const SMatrix<T> &A, const SMatrix<T> &B)
 	delete[] a;
 	delete[] b;
 
-	return SMatrix<T>::merge(c);
+	SMatrix<T> m = SMatrix<T>::merge(c);
+	m.trim(A.size());
+	return m;
 }

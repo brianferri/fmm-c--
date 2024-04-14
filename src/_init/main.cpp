@@ -91,7 +91,6 @@ int main()
 
 		std::cout << "-----------Strassen-----------" << std::endl;
 		E = multSt(A, B);
-		E.trim(A.size()); // TODO: Fix this (trim() should be called automatically)
 		std::cout << E << std::endl;
 
 		std::cout << "-----------3 Dimensional Matrix-----------" << std::endl;
