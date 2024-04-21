@@ -1,5 +1,6 @@
 {
     "files.associations": {
+        ".env*": "dotenv",
         "*.tpp": "cpp",
         "*.ipp": "cpp",
         "algorithm": "cpp",
@@ -42,6 +43,7 @@
         "tuple": "cpp",
         "typeinfo": "cpp",
         "variant": "cpp",
-        "iterator": "cpp"
+        "iterator": "cpp",
+        "chrono": "cpp"
     }
 }

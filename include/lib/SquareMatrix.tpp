@@ -75,15 +75,15 @@ public:
 
 	/* operator overload -- should not exceed O(n^2) */
 	// Implementations only consider square matrices of same size
-	T operator()(size_t i, size_t j) const { return data[i * n + j]; }
-	T &operator()(size_t i, size_t j)
+	inline T operator()(size_t i, size_t j) const { return data[i * n + j]; }
+	inline T &operator()(size_t i, size_t j)
 	{
 		if (i >= n || j >= n)
 			throw std::range_error("Index out of range!");
 		return data[i * n + j];
 	}
-	T operator[](size_t i) const { return data[i]; }
-	T &operator[](size_t i)
+	inline T operator[](size_t i) const { return data[i]; }
+	inline T &operator[](size_t i)
 	{
 		if (i >= n * n)
 			throw std::range_error("Index out of range!");

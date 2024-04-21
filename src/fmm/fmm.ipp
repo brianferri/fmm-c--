@@ -3,21 +3,13 @@ SquareMatrix<T> fmm::mult(const SquareMatrix<T> &A, const SquareMatrix<T> &B)
 {
 	if (A.size() != B.size())
 		throw std::range_error("Sizes are incompatible! > IT");
-
 	size_t n = A.size();
 	SquareMatrix<T> C(n);
 	C.fill(0);
-
 	for (size_t i = 0; i < n; ++i)
-	{
 		for (size_t k = 0; k < n; ++k)
-		{
 			for (size_t j = 0; j < n; ++j)
-			{
 				C(i, j) += A(i, k) * B(k, j);
-			}
-		}
-	}
 	return C;
 }
 
