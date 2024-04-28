@@ -18,8 +18,20 @@ SquareMatrix<T> fmm::strassen(const SquareMatrix<T> &A, const SquareMatrix<T> &B
 {
 	if (A.size() != B.size())
 		throw std::range_error("Sizes are incompatible! > ST");
-	if (A.size() == 1)
+	if (A.size() == 2)
+	{
+		T m1 = (A(0, 0) + A(1, 1)) * (B(0, 0) + B(1, 1));
+		T m2 = (A(1, 0) + A(1, 1)) * B(0, 0);
+		T m3 = A(0, 0) * (B(0, 1) - B(1, 1));
+		T m4 = A(1, 1) * (B(1, 0) - B(0, 0));
+		T m5 = (A(0, 0) + A(0, 1)) * B(1, 1);
+		T m6 = (A(1, 0) - A(0, 0)) * (B(0, 0) + B(0, 1));
+		T m7 = (A(0, 1) - A(1, 1)) * (B(1, 0) + B(1, 1));
+		return { { m1 + m4 - m5 + m7, m3 + m5 },
+				 { m2 + m4, m1 - m2 + m3 + m6 } };
+	} /* Just in case */ else if (A.size() == 1) {
 		return { { A(0, 0) * B(0, 0) } };
+	} // Base case
 
 	SquareMatrix<T> *a = A.split();
 	SquareMatrix<T> *b = B.split();
@@ -42,6 +54,8 @@ SquareMatrix<T> fmm::strassen(const SquareMatrix<T> &A, const SquareMatrix<T> &B
 	delete[] b;
 
 	SquareMatrix<T> m = SquareMatrix<T>::merge(c);
+	delete[] c;
+
 	m.trim(A.size());
 	return m;
 }
